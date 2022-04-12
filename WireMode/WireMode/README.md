@@ -24,6 +24,10 @@ The new node will then be sent an entire copy of the cluster's list of nodes as 
 
 (Note: the cluster that recieves the new node should send a network wide message stating a new node has joined which will cause nodes that stored the temporary ip address to delete the data. If the relay sent this message instead of the nodes then someone could hack the relay server, make lots of join requests and program the relay to not send the message causing ip addresses to pile up in the nodes and cause drain memory in the nodes resulting in a denial of service attack occuring.)
 
+What if a node disconnects and a new node wants to connect? Nodes should maintain their cluster peer lists when offline, however if a node is offline for
+a set period of time (TTL) then the node will be forgotten by the cluster and all cluster nodes will remove the node from peer lists. When rejoining, the node
+should be ignored when attempting to connect to peers on the peer list and thus will have to rejoin the network via the server.
+
 # Sending messages
 A node wants to send a message to another node. It doesn't have to do it through the network. The network is largely there for discovery. A mechanism for ensuring that nodes can find each other. The network is also there to authorise the connection between nodes so that the nodes are certain they are talking to who they think they're talking to.
 
